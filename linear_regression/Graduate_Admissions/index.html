@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>College Admission Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            background-color: #007bff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="number"],
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            color: #333;
+        }
+    </style>
+    <script>
+        $(document).ready(function(){
+            $("form").on("submit", function(event){
+                event.preventDefault();
+
+                $.ajax({
+                    url: "/predict",
+                    type: "POST",
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $("#result").html("Chance of getting Admission : " + response);
+                    },
+                    error: function() {
+                        alert("There was an error processing your request.");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Graduate Admission Prediction</h1>
+        <form>
+            <label for="gre">GRE Score (0 to 340):</label>
+            <input type="number" id="gre" name="gre" min="0" max="340" required>
+            
+            <label for="toefl">TOEFL Score (0 to 120):</label>
+            <input type="number" id="toefl" name="toefl" min="0" max="120" required>
+            
+            <label for="university_rating">University Rating:</label>
+            <select id="university_rating" name="university_rating" required>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            
+            <label for="sop">Statement of Purpose (1.0 to 5.0):</label>
+            <input type="number" id="sop" name="sop" step="0.1" min="1.0" max="5.0" required>
+            
+            <label for="lor">Letter of Recommendation Strength (1.0 to 5.0):</label>
+            <input type="number" id="lor" name="lor" step="0.1" min="1.0" max="5.0" required>
+            
+            <label for="cgpa">CGPA (1.00 to 10.00):</label>
+            <input type="number" id="cgpa" name="cgpa" step="0.01" min="1.00" max="10.00" required>
+            
+            <label for="research">Research:</label>
+            <select id="research" name="research" required>
+                <option value="1">Done</option>
+                <option value="0">Not Done</option>
+            </select>
+            
+            <input type="submit" value="Predict">
+        </form>
+        <div id="result"></div>
+    </div>
+</body>
+</html>
