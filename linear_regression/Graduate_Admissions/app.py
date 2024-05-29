@@ -4,9 +4,9 @@ import numpy as np
 import pickle
 
 # Load the saved scaler and model
-with open("E:/ML practice jupyter/Graduate Admissions/graduate_adm_scalar.pkl", "rb") as f:
+with open("graduate_adm_scalar.pkl", "rb") as f:
     saved_scalar = pickle.load(f)
-with open("E:/ML practice jupyter/Graduate Admissions/graduate_adm_model.pkl", 'rb') as f:
+with open("graduate_adm_model.pkl", 'rb') as f:
     saved_model = pickle.load(f)
 
 st.title('Graduate Admission Predictor')
